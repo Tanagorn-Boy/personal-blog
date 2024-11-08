@@ -11,6 +11,19 @@ app.use(express.json());
 app.post("/posts", async (req, res) => {
   const newPost = req.body;
 
+  if (
+    !newPost.title ||
+    !newPost.image ||
+    !newPost.category_id ||
+    !newPost.description ||
+    !newPost.content ||
+    !newPost.status_id
+  ) {
+    return res.status(400).json({
+      message: "Bad Request: Missing required fields",
+    });
+  }
+
   try {
     const query = `insert into posts (title, image, category_id, description, content, status_id) values ($1, $2, $3, $4, $5, $6)`;
 
